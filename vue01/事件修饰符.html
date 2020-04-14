@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <style>
+        .inner {
+            height: 150px;
+            background-color: darkblue;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--<div class="inner" @click.capture="div1click">-->
+        <div class="inner" @click.self="div1click">
+        <!--<input type="button" value="点它" @click.stop="btn1click"/>-->
+        <!--阻止冒泡-->
+        <input type="button" value="点它" @click="btn1click"/>
+        <!--捕获事件-->
+        <!--<input/>-->
+        <!--<input type="text" value="你好" name="hello" />-->
+
+    </div>
+    <a href="www.baidu.com" @click.prevent = "link1click">百度一下</a>
+    <a href="#" @click = "link1click">当前页</a>
+    <a href="#" @click.prevent.once = "link1click">当前也2</a>
+    <a href="#" @click.once.prevent = "link1click">当前也3</a>
+    <a href="www.baidu.com" @click.once.prevent = "link1click">baidu</a>
+</div>
+<script src="node_modules/vue/dist/vue.js"></script>
+<script>
+    const app = new Vue({
+        el:"#app",
+        data:{},
+        methods:{
+            div1click:function () {
+                console.log("这是 div1 click.");
+            },
+            btn1click:function () {
+                console.log("这是 btn1 click.");
+            },
+            link1click:function () {
+                console.log("这是 百度，link1 click.");
+            }
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

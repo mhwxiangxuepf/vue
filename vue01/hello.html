@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hellovue</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="num" />	<button @click="num++">+</button>
+        <h1>
+            {{message}},非常帅
+            {{num}} 位
+        </h1>
+        <!--<p v-cloak></p>-->
+        <!--  //没有闪烁问题；且会覆盖-->
+        <p v-text="msg"></p>
+        <button @click="mess">点我</button>
+        <div v-text="msg2"></div>
+        <div v-html="msg2"></div>
+        <input type="button" value="按钮" :title="mytitle" />
+        <!--:title="mytitle + '123'"-->
+        <input type="button" value="按钮" :title="mytitle + '123'" @click="alert('hello')"/> //表达式
+        <input type="button" value="an" @click="show"/>
+
+    </div>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script>
+//        当我们导入包之后，在浏览器的内存中，就多了一个vue构造函数
+        const app = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello Vue!',
+                num:1,
+                msg:"vue",
+                msg2:'<h1>哈哈，我是大大大的</h1>',
+                mytitle:"我的title"
+
+            },
+            methods:{
+             mess:function () {
+                 console.log("hhhhh");
+                 this.data.message = "大哥";
+             },
+                show:function () {
+                    alert('hello');
+                }
+            }
+        });
+
+document.getElementById('btn').onclick = function(){
+    alert('hello')
+}
+
+    </script>
+
+  <!--
+  {{}}会闪烁；
+
+	[v-cloak] 属性选择器
+	display:none
+	只要标签使用了v-cloak属性，则都隐藏；
+	然后又怎么显示出来了呢？
+
+	<p v-cloak>{{msg}}</p>
+    methods: {
+    reverseMessage: function () {
+      this.message = this.message.split('').reverse().join('')
+    }
+   methods
+
+    @click  点我
+
+    handleClick(){
+    name = "搭配"
+    }-->
+
+</body>
+</html>

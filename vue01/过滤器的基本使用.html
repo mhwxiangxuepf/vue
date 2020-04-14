@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <script src="node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <p>{{msg | msgFormat2('疯狂'+'123') | test}}</p>
+</div>
+
+<script>
+    Vue.filter('msgFormat',function (data) {
+//        return data.replace('单纯','邪恶');
+//        使用正则
+        return data.replace(/单纯/g,'邪恶')
+    })
+
+    //可以传参的过滤器
+    Vue.filter('msgFormat2',function (data,arg,arg2) {
+        return data.replace(/单纯/g,arg+arg2);
+    })
+    Vue.filter('test',function (data) {
+        return data+'========='
+    })
+    const app = new Vue({
+        el:"#app",
+        data:{
+            msg:'曾经我也是单纯的少年，单纯我，傻傻的问，谁是最单纯；'
+        },
+        methods:{}
+
+    });
+//    如果放在 new vue后面则无效果
+//    Vue.filter('msgFormat2',function (data,arg) {
+//        return data.replace(/单纯/g,arg);
+//    })
+
+</script>
+
+</body>
+</html>
