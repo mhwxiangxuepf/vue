@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="static/vue-resource-1.3.4.js"></script>
+    <link rel="stylesheet" href="./static/bootstrap-3.3.7.css">
+    <style>
+        /*属性选择器*/
+        /*只要加了v-cloak属性的元素默认设为隐藏*/
+        /*当vue渲染完后，则是 <p>123</p> 这时则没有这个*/
+        /*v-cloak属性，则不被隐藏了；*/
+        /*故v-cloak，是渲染前存在，渲染后不存在的属性？*/
+    [v-cloak]{
+        display:none;
+    }
+    </style>
+</head>
+<body>
+<div id="app">
+    <!--会闪烁-->
+    <p>{{msg}}</p>
+    <!--不会闪烁-->
+    <p v-cloak>{{msg}}</p>
+    <!--这个则不会闪烁
+        v-text会覆盖内容；
+        插值表达式，则只是做一个占位作用；
+    -->
+    <h4 v-text="msg"></h4>
+    <div v-html="msg2"></div>
+</div>
+
+<script>
+    const app = new Vue({
+        el:"#app",
+        data:{
+            msg:123,
+            msg2:'<h1>我是H1</h1>'
+        },
+        methods:{}
+
+    });
+
+</script>
+
+</body>
+</html>

@@ -22,6 +22,14 @@
         <!--<input type="text" value="你好" name="hello" />-->
 
     </div>
+    <!--prevent,阻止a 标签的默认行为
+    stop  阻止冒泡机制 写在内层元素  先触发btn 后触发div  冒泡机制；在input @click.stop
+    prevent 阻止默认行为
+    capture  捕获事件 写在外层元素；添加事件侦听事件，使用事件捕获模式
+	从外往里执行事件
+    selt
+    once 只触发一次
+    -->
     <a href="www.baidu.com" @click.prevent = "link1click">百度一下</a>
     <a href="#" @click = "link1click">当前页</a>
     <a href="#" @click.prevent.once = "link1click">当前也2</a>
