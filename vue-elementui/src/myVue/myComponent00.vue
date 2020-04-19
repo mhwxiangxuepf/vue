@@ -3,7 +3,7 @@
 </template>
 <script>
   export default {
-    name: 'my00',
+    name: 'my',
     data () {
       return {
         msg: '欢迎来到我的第00个vue组件'
