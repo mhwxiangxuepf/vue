@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="static/vue-resource-1.3.4.js"></script>
+    <link rel="stylesheet" href="./static/bootstrap-3.3.7.css">
+    <style>
+        .child{
+            background-color: green;
+        }
+        .father{
+            background-color: #1b6d85;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="father">
+        <h3>这里是父组件</h3>
+        <child>
+            <div class="tmpl" slot="up"> <!-- 相当于把 v-for="val in arr"  放入到 ‘ <div class="tmpl" slot="up">’  然后循环 -->
+                <span>菜单11111</span>
+            </div>
+
+        </child>
+
+        <!--<child>-->
+            <!--<div slot="up" slot-scope="user">-->
+                <!--<div class="tmpl">-->
+                    <!--<span v-for="item in user.data">111</span>-->
+                    <!--&lt;!&ndash;v-for="item in user.data" 会报错异常，导致111 不显示；&ndash;&gt;-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</child>-->
+        <!--测试没有使用分发者，即是把以上分发者都注释，看看会怎样;
+            结果只显示 这里是子组件；
+        -->
+        <!--<child></child>-->
+
+        <child >
+            <div slot="up" itemscope="props" >
+                <li>props</li>
+            </div>
+        </child>
+    </div>
+
+
+</div>
+    <template id="tmpl">
+        <div class="child">
+
+            <h3>这里是子组件</h3>
+            <ul>
+                <!--:text="'姓名是：'+val"-->
+                <slot name="up" v-for="val in arr" :text="'姓名是：'+val"></slot>
+            </ul>
+        </div>
+
+
+    </template>
+<script>
+    Vue.component('child', {
+        template: '#tmpl',
+        /*
+         作用域插槽要求，在槽上面绑定数据;
+         <slot name="up" :data="data"></slot>
+         */
+        data:function () { //插槽标签slot 里 绑定子组件的数据；
+            return {arr: ['zhangsan','lisi','wanwu','zhaoliu','tianqi','xiaoba']}
+        }
+
+    })
+    const app = new Vue({
+        el:"#app",
+        data:{},
+        methods:{},
+
+    });
+
+</script>
+
+</body>
+</html>

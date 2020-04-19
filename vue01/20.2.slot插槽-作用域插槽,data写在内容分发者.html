@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <script src="node_modules/vue/dist/vue.js"></script>
+    <script src="static/vue-resource-1.3.4.js"></script>
+    <link rel="stylesheet" href="./static/bootstrap-3.3.7.css">
+    <style>
+        .child{
+            background-color: green;
+        }
+        .father{
+            background-color: #1b6d85;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="father">
+        <h3>这里是父组件</h3>
+
+        <child>
+            <div slot="up" :data-user="data1">
+                <span>菜单11111</span>
+                <div class="tmpl">
+                    <span v-for="item in user.data">{{item}}</span>
+                </div>
+            </div>
+        </child>
+
+    </div>
+
+
+</div>
+    <template id="tmpl">
+        <div class="child">
+            <h3>这里是子组件</h3>
+            <slot name = "up"></slot>
+        </div>
+
+
+    </template>
+<script>
+    Vue.component('child', {
+        template: '#tmpl',
+
+
+    })
+    const app = new Vue({
+        el:"#app",
+        data:{
+            data1: ['zhangsan','lisi','wanwu','zhaoliu','tianqi','xiaoba']
+        },
+        methods:{},
+
+    });
+
+</script>
+
+</body>
+</html>
