@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script src="../static/vue-resource-1.3.4.js"></script>
+    <script src="../static/vue-router.js"></script>
+    <link rel="stylesheet" href="../static/bootstrap-3.3.7.css">
+    <style>
+        html,body{
+            margin: 0;
+            padding:0;
+        }
+        .header{
+            background-color: orange;
+            height: 80px ;
+        }
+        .container{
+    display: flex;
+            /*height: 600px;*/
+            background-color: #1b6d85;
+            margin-right: 0px;
+            margin-left: 0px;
+
+        }
+        h1{
+            margin: 0;
+            padding:0;
+            font-size: 16px;
+        }
+        .left{
+            background-color: lightgreen;
+            flex: 2;
+        }
+        .main{
+            background-color: lightpink;
+            flex: 8;
+        }
+    </style>
+    <!--全文说明
+    经典布局上左中
+    1. 上一个组件，左一个组件，中一个组件
+    2.
+     {path: '/', components: {
+                default: header,
+                left: leftBox,
+                main: mainBox,
+            }},
+
+    3. <router-view name="left"></router-view>
+    4. 剩下就是css 了；
+    -->
+</head>
+<body>
+<div id="app">
+    <router-view></router-view>
+    <div class="container">
+        <router-view name="left"></router-view>
+        <router-view name="main"></router-view>
+    </div>
+
+</div>
+
+<script>
+    var header ={
+        template: '<h1 class="header">Header头部区域</h1>'
+    }
+    var leftBox ={
+        template: '<h1 class="left">Left侧边栏区域</h1>'
+    }
+    var mainBox ={
+        template: '<h1 class="main">Main主体区域</h1>'
+    }
+    //路由对象
+    var router = new VueRouter({
+        routes: [
+//            以下方式是不可以的 因为url只有一个，这样会显示三份同一url地址的组件
+//            {path: '/', component: header},
+//            {path: '/left',component: leftBox },
+//            {path: '/main', component: mainBox},
+            {path: '/', components: {
+                default: header,
+                'left': leftBox,
+                'main': mainBox, //左边是组件名，如果不加引号，默认也会帮你加引号；
+            }},
+        ]
+    })
+    const app = new Vue({
+        el:"#app",
+        router,
+        data:{},
+        methods:{}
+
+    });
+
+</script>
+
+</body>
+</html>

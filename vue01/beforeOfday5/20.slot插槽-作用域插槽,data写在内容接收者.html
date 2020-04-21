@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script src="../static/vue-resource-1.3.4.js"></script>
+    <link rel="stylesheet" href="../static/bootstrap-3.3.7.css">
+    <style>
+        .child{
+            background-color: green;
+        }
+        .father{
+            background-color: #1b6d85;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="father">
+        <h3>这里是父组件</h3>
+        <child>
+            <div class="tmpl" slot="up">
+                <span>菜单11111</span>
+            </div>
+
+
+        </child>
+
+        <child>
+            <div slot="up" slot-scope="user">
+                <div class="tmpl">
+                    <p v-for="item in user.data">{{item}}</p>
+                    <!--user.data 指向就是 子组件 的 data.data1;即是 user 指向 组件data属性-->
+                    <!--但是数据还是组件自己的数据，且还是在组件上显示，数据并没有进入到父组件的vue
+                    model里；
+                        故，slot-scope 只是让子组件的插槽，可以共享子组件的 data;
+
+                        注意： v-for 是写在 内容分发者； :data="data1" 写在 data 所在的组件上，
+                        这里就是写在，内容接收者；
+                    -->
+                </div>
+                <input type="text" v-model="userFather" >
+            </div>
+        </child>
+        <!--问题思考，完成子向父传值
+            1. 把user 指向到 属性 data-*
+        -->
+        <div>如何获取 user 内容</div>
+
+    </div>
+
+
+</div>
+    <template id="tmpl">
+        <div class="child">
+            <h3>这里是子组件</h3>
+            <slot name="up" :data="data1"></slot> //data属性的属性值绑定 数据data
+
+        </div>
+
+
+    </template>
+<script>
+    Vue.component('child', {
+        template: '#tmpl',
+        /*
+         作用域插槽要求，在槽上面绑定数据;
+         <slot name="up" :data="data"></slot>
+         */
+        data:function () { //插槽标签slot 里 绑定子组件的数据；
+            return {data1: ['zhangsan','lisi','wanwu','zhaoliu','tianqi','xiaoba']}
+        }
+
+    })
+    const app = new Vue({
+        el:"#app",
+        data:{
+            userFather:1,
+        },
+        methods:{
+
+        },
+        watch:{
+            userFather:function () {
+                console.log(this.userFather)
+            }
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

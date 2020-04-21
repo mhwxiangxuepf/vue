@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="../static/bootstrap-3.3.7.css">
+    <!--./ 是当前项目-->
+    <!--H:\allI-JAVA\ideaworkspace\vue-demo\vue01\static\bootstrap-3.3.7.css-->
+</head>
+<body>
+<div id="app2">
+    <h3>{{date| dateFormat}}</h3>
+</div>
+<div id="app" class="table table-border">
+
+    form-inline
+    label
+    Id:
+    input
+    Name:
+
+    button 添加
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">添加品牌</h3>
+        </div>
+        <div class="panel-body form-inline">
+            <span>
+                Id:
+                <input type="text" class="form-control" v-model="id">
+            </span>
+            <span>
+                Name:
+                <input type="text" class="form-control" v-model="name" @keyup.enter="add">
+            </span>
+            <input type="button" value="添加" class="btn btn-primary" @click="add">
+            <span>
+                搜索关键字:
+                <input type="text" class="form-control" v-model="keywords">
+            </span>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Ctime</th>
+            <th>Operation</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="item in search2(keywords)" :key="item.id">
+            <td>{{item.id}}</td>
+            <td v-text="item.name"></td>
+            <td>{{item.ctime | dateFormat('yyyy-mm-dd')}}</td>
+            <td>
+                <a href="" @click.prevent="del3(item.id)">删除</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+ /*   pattern
+    (pattern.toLowerCase()==='yyyy-mm-dd')
+
+    else
+    var hh dt.getHours
+    getMinutes
+    getSeconds*/
+
+
+    Vue.filter('dateFormat',function (data,pattern="") {  //es6形参的默认写法；
+        var dt = new Date(data);
+        var y = dt.getFullYear();
+        var m = dt.getMonth()+1;
+        var d = dt.getDate();
+        if( pattern.toLowerCase() === 'yyyy-mm-dd'){
+            return `${y}-${m}-${d}`;
+        }else {
+            var h = dt.getHours();
+            var m = dt.getMinutes();
+            var s = dt.getSeconds();
+            return `${y}-${m}-${d} ${h}:${m}:${s}`;
+        }
+
+    })
+
+    const app2 = new Vue({
+        el:'#app2',
+        data:{
+            date:new Date()
+        },
+        methods:{},
+        filters:{
+            dateFormat:function (data,pattern="") {
+                var dt = new Date(data);
+                var y = dt.getFullYear();
+                var m = dt.getMonth()+1;
+                var d = dt.getDate();
+                if( pattern.toLowerCase() === 'yyyy-mm-dd'){
+                    return `${y}-${m}-${d}`;
+                }else {
+                    var h = dt.getHours();
+                    var m = dt.getMinutes();
+                    var s = dt.getSeconds();
+                    return `${y}-${m}-${d} ${h}:${m}:${s}`;
+                }
+            }
+        }
+
+    })
+    const app = new Vue({
+        el:"#app",
+        data:{
+            id:'',
+            name:'',
+            keywords:'',
+            list:[
+                {id:1,name:'奔驰',ctime:new Date()},
+                {id:2,name:'宝马',ctime:new Date()}
+            ]
+        },
+        methods:{
+            add:function () {
+//                console.log("ok");
+                var car = {id: this.id,name:this.name,ctime:new Date()}
+                this.list.push(car)
+                this.id = this.name = ''
+            },
+            del:function (id) {
+                this.list.some(
+                    (item,i) => {
+                        if(item.id == id){//虽然报红色，但是运行ok
+                        alert(id+'---'+item.id+'-----'+i);
+                        this.list.splice(i,1);
+                        return true;
+
+                     }
+                    }//虽然报红色，但是运行ok
+                )},
+            del2:function (id) {
+//                ES3语法
+                var that = this;
+                this.list.some(function (item,i) {
+                    if(item.id == id){
+                        alert(id+'---'+item.id+'-----'+i);
+//                        this.list.splice(i,1);  //这里会报错，因为this 不再是vue实例；
+                        that.list.splice(i,1);
+                        return true;
+                    }
+                    
+                })
+
+            },
+            del3:function (id) {
+             var indexs =   this.list.findIndex(item =>{
+                    if(item.id == id)
+                {
+                    alert(id + '---' + item.id + '-----');
+                    return true;
+                }
+                });
+             alert(indexs);
+             this.list.splice(indexs,1)
+            },
+            /*var newList = []
+            list.forEach(
+            item => {
+            if(item.name.indexOf(keywords) != -1){
+        newList.push(item)
+    }
+    }
+    )*/
+            search:function (keywords) {
+                var newList = [];
+                this.list.forEach(
+                    item => {
+                        if(item.name.indexOf(keywords) != -1){
+                            newList.push(item);
+                }
+                }
+                );
+                return newList;
+            },
+            /*另一方式
+            forEach some filter  findIndex  都是数组的新方法； //@
+
+    this.list.filter(
+    if(item.name.includes(keywords))  //@
+    )
+
+    string.prototype.includes  Es6的方法
+
+    jQuery  contains 也是包含方法 ；
+
+    return item*/
+            search2:function (keywords) {
+                var newList = this.list.filter(
+                    item => {
+                        if(item.name.includes(keywords)){
+                            return item;
+                }
+                }
+                );
+                return newList;
+            },
+            
+            method:function () {
+                
+            }
+
+        }
+
+
+
+    });
+//            del:function (id) {
+//                del
+//                1. 如何根据id 找到这一项索引
+//                2. splice
+//
+
+
+    /*定义过滤器
+
+    Vue.filter('过滤器名称',function(){})
+
+    function第一个参数已经被规定死了，是过滤器管道符前面传递过来的数据；
+     Vue.filter
+     dateFormat
+     var dt
+     new Date(dateStr)
+
+     var y = dt.getFullYear()
+     var m = dt.getMonth +1
+     var d = dt.getDate
+
+     return `yyyy-mm-dd`
+     //@  模板字符串
+
+     retutn `${y}-${m}-${d}`
+     //@*/
+
+
+
+
+
+</script>
+
+</body>
+</html>

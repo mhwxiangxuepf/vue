@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script src="../static/vue-resource-1.3.4.js"></script>
+    <link rel="stylesheet" href="../static/bootstrap-3.3.7.css">
+    <style>
+
+    </style>
+</head>
+<body>
+<div id="app">
+
+    <tb-list :data="data">
+        <!--被分发内容
+            1. scope 映射 slot 的自定义属性变量；
+            scope:{row:row,$index:$index}
+
+            详情请看 《关于vue中scope，slot-scope理解及，了解组件相关的元素；》
+        -->
+        <template scope="scope">
+            <div class="info" :s="JSON.stringify(scope)">
+                <!--scope.row  即是 子的 items-->
+                <p>姓名:{{scope.row.name}}</p>
+                <p>年龄: {{scope.row.age}}</p>
+                <p>性别: {{scope.row.sex}}</p>
+                <p>索引：{{scope.$index}}</p>
+            </div>
+        </template>
+    </tb-list>
+</div>
+<script id="tb-list" type="text/x-template">
+    <ul>
+        <li v-for="(item, index) in data">
+            <slot :row="item" :$index="index"></slot>
+        </li>
+    </ul>
+</script>
+<script type="text/javascript">
+    Vue.component('tb-list', {
+        template: '#tb-list',
+        props: {
+            data: {
+                type: Array,
+                required: true
+            }
+        },
+        methods: {
+
+        }
+    });
+    const app = new Vue({
+        el:"#app",
+        data:{
+            data: [
+                {
+                    name: 'kongzhi1',
+                    age: '29',
+                    sex: 'man'
+                },
+                {
+                    name: 'kongzhi2',
+                    age: '30',
+                    sex: 'woman'
+                }
+            ]
+        },
+        methods:{}
+
+    });
+
+</script>
+
+</body>
+</html>

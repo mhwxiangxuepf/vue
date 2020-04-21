@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>跑马灯</title>
+</head>
+<body>
+<div id="app">
+
+    <input type="button" value="浪起来" @click="lang2"/>
+    <input type="button" value="低调" @click="stop" />
+    <h4>{{msg}}</h4>
+</div>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    /*注意：在vue实例中，想调用data上数据，或者method的方法
+    必须通过this访问，this是指这vue实例；*/
+    /*注意，vm实例，会监听自己身上data数据改变，只要数据发生变化，就会自动把最新数据，同步到view,
+        这是从vm到view 的绑定；*/
+   /* 定时器
+    setInterval
+    function
+    400*/
+    const app = new Vue({
+        el:"#app",
+        data:{
+            msg:'猥琐发育，别浪..',
+            intervalId:null
+
+        },
+        methods:{
+            lang:function(){
+//                alert(this.msg);
+                var start = this.msg.substring(0,1);
+                var end = this.msg.substring(1); //截到最后，第二个数可忽略不写；
+
+                this.msg = end + start
+            },
+            lang2:function () {
+                if(this.intervalId != null)
+                    return;
+                this.intervalId = setInterval(this.lang,400);
+            },
+            lang3:function () {
+                setInterval(function () {
+                    var start = this.msg.substring(0,1);
+                    var end = this.msg.substring(1); //
+                    /*
+                     这里的this，不是vue实例了，而是定时器，故取不到vue的数值；
+                     一层functiaon大括号，代表一个对象实例,背后有这么一个调用它的对象；
+                     */
+                    this.msg = end + start
+                },400)
+            },
+            lang4:function () {
+                var sthis = this
+                setInterval(function () {
+                    var start = sthis.msg.substring(0,1);
+                    var end = sthis.msg.substring(1); //
+                    /*
+                    set的参数function 可以直接返回其 上级function的变量sthis
+                     */
+                    sthis.msg = end + start
+                },400)
+            },
+            stop:function () {
+                clearInterval(this.intervalId);
+                this.intervalId = null;
+            }
+
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

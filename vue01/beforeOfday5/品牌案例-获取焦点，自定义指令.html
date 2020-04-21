@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="../static/bootstrap-3.3.7.css">
+    <!--./ 是当前项目-->
+    <!--H:\allI-JAVA\ideaworkspace\vue-demo\vue01\static\bootstrap-3.3.7.css-->
+</head>
+<body>
+<div id="app2">
+    <h3 v-fontsize="'60px'">{{date| dateFormat}}</h3>
+</div>
+<div id="app" class="table table-border">
+
+    form-inline
+    label
+    Id:
+    input
+    Name:
+
+    button 添加
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">添加品牌</h3>
+        </div>
+        <div class="panel-body form-inline">
+            <span>
+                Id:
+                <input type="text" class="form-control" v-model="id">
+            </span>
+            <span>
+                Name:
+                <input type="text" class="form-control" v-model="name" @keyup.enter="add" >
+            </span>
+            <input type="button" value="添加" class="btn btn-primary" @click="add">
+            <span>
+                搜索关键字:
+                <input type="text" class="form-control" v-model="keywords" id="search" v-focus v-color="'blue'">
+            </span>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Ctime</th>
+            <th>Operation</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="item in search2(keywords)" :key="item.id">
+            <td>{{item.id}}</td>
+            <td v-text="item.name"></td>
+            <td>{{item.ctime | dateFormat('yyyy-mm-dd')}}</td>
+            <td>
+                <a href="" @click.prevent="del3(item.id)">删除</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    //定义全局指令
+
+    Vue.directive('focus',{
+        ////每当指令绑定到元素上的时候，会立即执行，只触发一次；
+        bind:function (el) { //第一个参数是 el,而且是原生的js对象；
+
+         el.focus();
+         alert('插入dom之前执行了');
+//         console.log('插入dom之前执行了')
+        }
+        //元素插入到dom中后执行；
+//        inserted:function (el) {
+//            alert('0');
+//            el.focus();
+//        }
+    })
+
+    Vue.directive('color',{
+//        bind:function (el) {
+//            el.style.color = 'red';
+//
+//        },
+        inserted:function (el,binding) {
+            alert('0000')
+            el.style.color = binding.value;
+        }
+    })
+
+
+    Vue.filter('dateFormat',function (data,pattern="") {  //es6形参的默认写法；
+        var dt = new Date(data);
+        var y = dt.getFullYear();
+        var m = dt.getMonth()+1;
+        var d = dt.getDate();
+        if( pattern.toLowerCase() === 'yyyy-mm-dd'){
+            return `${y}-${m}-${d}`;
+        }else {
+            var h = dt.getHours();
+            var m = dt.getMinutes();
+            var s = dt.getSeconds();
+            return `${y}-${m}-${d} ${h}:${m}:${s}`;
+        }
+
+    })
+
+    const app2 = new Vue({
+        el:'#app2',
+        data:{
+            date:new Date()
+        },
+        methods:{},
+        filters:{
+            dateFormat:function (data,pattern="") {
+                var dt = new Date(data);
+                var y = dt.getFullYear();
+                var m = dt.getMonth()+1;
+                var d = dt.getDate();
+                if( pattern.toLowerCase() === 'yyyy-mm-dd'){
+                    return `${y}-${m}-${d}`;
+                }else {
+                    var h = dt.getHours();
+                    var m = dt.getMinutes();
+                    var s = dt.getSeconds();
+                    return `${y}-${m}-${d} ${h}:${m}:${s}`;
+                }
+            }
+        },
+        directives: {
+            fontsize:function(el,binding){
+                //等于把代码写在bind  update中去；
+                el.style.fontSize = parseInt(binding.value)+'px';
+            }
+        }
+
+    })
+    const app = new Vue({
+        el:"#app",
+        data:{
+            id:'',
+            name:'',
+            keywords:'',
+            list:[
+                {id:1,name:'奔驰',ctime:new Date()},
+                {id:2,name:'宝马',ctime:new Date()}
+            ]
+        },
+        methods:{
+            add:function () {
+//                console.log("ok");
+                var car = {id: this.id,name:this.name,ctime:new Date()}
+                this.list.push(car)
+                this.id = this.name = ''
+            },
+            del:function (id) {
+                this.list.some(
+                    (item,i) => {
+                        if(item.id == id){//虽然报红色，但是运行ok
+                        alert(id+'---'+item.id+'-----'+i);
+                        this.list.splice(i,1);
+                        return true;
+
+                     }
+                    }//虽然报红色，但是运行ok
+                )},
+            del2:function (id) {
+//                ES3语法
+                var that = this;
+                this.list.some(function (item,i) {
+                    if(item.id == id){
+                        alert(id+'---'+item.id+'-----'+i);
+//                        this.list.splice(i,1);  //这里会报错，因为this 不再是vue实例；
+                        that.list.splice(i,1);
+                        return true;
+                    }
+                    
+                })
+
+            },
+            del3:function (id) {
+             var indexs =   this.list.findIndex(item =>{
+                    if(item.id == id)
+                {
+                    alert(id + '---' + item.id + '-----');
+                    return true;
+                }
+                });
+             alert(indexs);
+             this.list.splice(indexs,1)
+            },
+
+            search:function (keywords) {
+                var newList = [];
+                this.list.forEach(
+                    item => {
+                        if(item.name.indexOf(keywords) != -1){
+                            newList.push(item);
+                }
+                }
+                );
+                return newList;
+            },
+
+            search2:function (keywords) {
+                var newList = this.list.filter(
+                    item => {
+                        if(item.name.includes(keywords)){
+                            return item;
+                }
+                }
+                );
+                return newList;
+            },
+            
+            method:function () {
+                
+            }
+
+        }
+
+
+
+    });
+
+
+//            del:function (id) {
+//                del
+//                1. 如何根据id 找到这一项索引
+//                2. splice
+//
+
+
+
+
+// document.getElementById('search').focus()
+    //原生获取焦点
+
+
+
+</script>
+
+</body>
+</html>
