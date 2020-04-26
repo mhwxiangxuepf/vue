@@ -11,7 +11,7 @@
 
     </style>
     <!--全文说明
-    computed属性来实现拼接
+    computed属性来实现拼接及其3个特点
 
     -->
 </head>
@@ -52,6 +52,7 @@
                 // 方便下次直接使用；如果计算属性方法中，所用到的
                 // 任何数据，都没有发生过变化，则不会重新对
                 // 计算属性求值；
+                // 注意4： 计算属性的 function 必须return出一个值
                 return this.firstname + '--' +
                         this.lastname
             }

@@ -9,8 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "jquery": "^3.5.0",
     "vue": "^2.6.11"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "webpack-cli": "^3.3.11"
+  },
   "description": ""
 }
