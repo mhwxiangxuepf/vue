@@ -11,15 +11,26 @@ var htmlWebpackPlugin = require('html-webpack-plugin')
 // 此时他会检查 项目根目录中的配置文件，并读取这个文件，
 //就拿到了 导出的这个 配置对象 module.exports 进行打包构建；
 module.exports = {
-    entry: path.join(__dirname,'./main.js'),
+    entry: path.join(__dirname,'./src/main.js'),
     output: {
         path: path.join(__dirname,'./dist'),
         filename: "bundle.js"
     },
     plugins: [ //所有 webpack 插件的配置点
         new htmlWebpackPlugin({
-            template: path.join(__dirname,'./index.html'),
+            template: path.join(__dirname,'./src/index.html'),
             filename: 'index.html'
         })
-    ]
+    ],
+    module: { //配置所有第三方loader 模块的
+        rules: [
+            {test:/\.css$/,use:['style-loader','css-loader']},
+            //limit传参，单位是byte,但图片大小 大于或等于 limit 则不会转为base64
+            // name, 指定图片名字 [name]是指图片本身的名字，[ext]是指图片本身的扩展名 [hash:8]-
+            {test: /\.(jpg|png|gif|bmp|jpeg)$/,use:['url-loader?limit=17508&name=[name].[ext]']}, //file-loader是urlloader内部依赖，不用我们自己依赖；
+            // {test: /\.(ttf|ect|svg|woff|woff2)$/, use:['url-loader']},//处理字体文件
+            {test:/\.(ttf|eot|svg|woff|woff2|otf)$/, use: 'url-loader'}
+        ]
+
+    }
 }

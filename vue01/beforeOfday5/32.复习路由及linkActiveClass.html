@@ -30,9 +30,16 @@
     var register = {
         template:'<h3>这是注册子组件</h3>'
     }
+    var com1 = {
+        template:'<h3>重定向前加载的组件</h3>'
+    }
     var router = new VueRouter({
         routes:[
-            {path:'/',redirect:'/login'},//默认路径
+//            {path:'/',redirect:'/login'},//默认路径
+//            {path:'/',component: com1,redirect:'/login'},//默认路径
+//            {path:'/',component: () => import(com1),redirect:'/login'},//默认路径
+//            {path:'/', component: () => import(com1)},//默认路径
+            {path:'/',component: com1},//默认路径
             {path: '/login',component:login},
             {path:'/register',component:register},
         ],
