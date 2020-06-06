@@ -31,7 +31,10 @@
             birthday:1529032123201 //毫秒值
         },
         methods:{},
-        computed:{ //计算属性，本质是个方法；
+        computed:{
+            // 1. computed 是另一个可定义变量的属性 ,变量名不能与data冲突;
+            // 2. 本质是一个方法需要返回 ；
+            // 3. 当return有变化则会自动执行该方法 ；
             birth:function () {
                 console.log(1);//只打印一次，说明只在最开始时运算一次；
                 /**

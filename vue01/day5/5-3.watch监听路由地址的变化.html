@@ -39,7 +39,7 @@
             {path:'/register',component:register},
         ],
         linkActiveClass:'myactive' //激活相关的类
-        // 会在激活的组件上添加 这个类名 class="router-link-exact-active myactive"
+        // 会在激活的 router-link 上添加 这个类名 class="router-link-exact-active myactive"
     })
     const app = new Vue({
         el:"#app",
@@ -49,7 +49,7 @@
         watch:{
             // this.$route.path 监听这个地址的变化；
             //
-            '$route.path': function (newVal,oldVal) {
+            '$route.path': function (newVal,oldVal) { // 使用 $route.path 前 先向当前vue实例注册 路由router；
                 console.log(newVal + '--' + oldVal)
                 if(newVal === '/login'){
                     console.log('欢迎进入登录页面')

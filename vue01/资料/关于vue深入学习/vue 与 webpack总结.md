@@ -78,7 +78,8 @@ cnpm i html-webpack-plugin -D  //这插件可以在内存中生成html页面；
 
 
 
-
+关于 VueTemplate 模板组件，在VueStudy2；
+1. 总结了 很多vue知识； 
 
 
 
