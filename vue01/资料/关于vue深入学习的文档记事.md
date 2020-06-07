@@ -19,7 +19,8 @@ www.baidu.com#/reg  #号后面都叫hash;
 4.1 use就是注册xxx；
 手动安装组件；
 
-
+从v6-09 又开始随堂笔记；之前是写在代码中 ；
+整个webpack学习都在代码中，到webpack+vue 开始回到随堂笔记；
 
 v6-09  区分webpack中导入vue和普通网页使用script		-18
  
